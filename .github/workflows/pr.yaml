@@ -1,0 +1,25 @@
+name: Pr checks
+
+on:
+  pull_request: {}
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+      checks: write
+    steps:
+      - name: Checkout repository
+        uses: "actions/checkout@v4"
+
+      - name: 'Run FAST tests'
+        if: ${{ !startsWith(github.head_ref, 'trunk-merge/') }}
+        run: |
+          sleep 1
+
+      - name: 'Run SLOW tests'
+        if: startsWith(github.head_ref, 'trunk-merge/')
+        run: |
+          sleep 11
